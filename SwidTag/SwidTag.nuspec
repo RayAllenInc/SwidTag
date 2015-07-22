@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SwidTag</id>
+    <version>$version$</version>
+    <title>Title for SwidTag</title>
+    <authors>SwidTag Author</authors>
+    <owners>SwidTag Owner</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>http://github.com/...</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SwidTag Description</description>
+    <summary>SwidTag Summary</summary>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags></tags>
+  </metadata>
+</package>
