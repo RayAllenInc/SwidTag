@@ -13,7 +13,7 @@ for /R %%v in (*.nuspec) do (
     tools\nuget pack !file! -symbols -Properties Configuration=Release || goto fail
 ) 
 
-move *.nupkg repo || goto fail
+move *.nupkg ..\repo || goto fail
 
 goto fin
 

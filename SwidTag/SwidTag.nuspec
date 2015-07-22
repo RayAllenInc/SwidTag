@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>SwidTag</id>
+    <id>FearTheCowboy.SwidTag</id>
     <version>$version$</version>
-    <title>Title for SwidTag</title>
-    <authors>SwidTag Author</authors>
-    <owners>SwidTag Owner</owners>
+    <title>ISO-19770-2/2015 Swidtag Library</title>
+    <authors>Garrett Serack</authors>
+    <owners>Garrett Serack</owners>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
-    <projectUrl>http://github.com/...</projectUrl>
+    <projectUrl>http://github.com/fearthecowboy/SwidTag</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>SwidTag Description</description>
-    <summary>SwidTag Summary</summary>
+    <description>Contains classes for consuming and producing ISO 19770-2/2015 Swidtags in JSON, HTML and XML</description>
+    <summary>Contains classes for consuming and producing Swidtags</summary>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags></tags>

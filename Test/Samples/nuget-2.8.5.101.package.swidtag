@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:discovery="http://packagemanagement.org/discovery"
+    xmlns:install="http://packagemanagement.org/install"
+    
+    tagId="nuget.2.8.5.101"
+    name="nuget"
+    version="2.8.5.101" versionScheme="multipartnumeric"
+    media="(OS:windows)"
+    tagVersion="1"
+    >
+
+    <!--
+        This swidtag contains links to the installation media for the NuGet
+        provider
+    -->
+
+    <Meta
+        providerName="nuget"
+        providerVersion="2.8.5.101"
+        summary="NuGet provider for the OneGet meta-package manager"
+    />
+
+    <!-- NuGet Provider Swidtag Links -->
+    <Link
+        href="https://oneget.org/nuget-anycpu-2.8.5.101.exe"
+        type="application/octet-stream"
+        rel="installationmedia"
+
+        discovery:targetFilename="nuget-anycpu.exe"
+        discovery:type="assembly"
+        media="(OS:windows)"
+    />
+  
+   <Link
+        href="script:x64-install-script"
+        rel="installationmedia"
+        media="(OS:windows) AND (windows.architecture:x64)"
+    />
+
+   <Link
+        href="http://foo/install.ps1"
+        rel="installationmedia"
+        media="(OS:windows) AND (windows.architecture:x64)"
+    />
+
+  <install:Script id="x64-install-script" type="application/vnd.packagemanagement.script.powershell">
+    $something = (wget -url http://foo ).Content
+    set-content -outFile c:\foo\bar.cmd -content $something
+  </install:Script>
+
+</SoftwareIdentity>

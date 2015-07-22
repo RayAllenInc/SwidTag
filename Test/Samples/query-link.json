@@ -1,0 +1,18 @@
+﻿{
+     "@context":"http://packagemanagement/discovery/1.0",
+
+
+    "Link": {
+        "https://github.com/robmen/gitsetup/releases/download/v1.9.4.40929/gitsetup.exe": {
+            "rel": "installationmedia"
+        }
+    },
+    "Meta": {
+        "keyword": "git msysgit dvcs",
+        "title": "Git on Windows"
+    },
+    "name": "git",
+    "tagId": "https://github.com/robmen/gitsetup",
+    "version": "1.9.4.40929"
+
+}
