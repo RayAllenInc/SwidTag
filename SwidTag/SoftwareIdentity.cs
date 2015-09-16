@@ -45,7 +45,7 @@ namespace FearTheCowboy.Iso19770 {
         }
 
         public SoftwareIdentity()
-            : this(new XDocument(Xml.Declaration, new XElement(Elements.SoftwareIdentity))) {
+            : this(new XDocument(Xml.Declaration, new XElement(Schema.SoftwareIdentity.Elements.SoftwareIdentity))) {
         }
 
         public SoftwareIdentity(XElement xmlDocument)
@@ -85,11 +85,15 @@ namespace FearTheCowboy.Iso19770 {
                         foreach (var attr in Meta.SelectMany(m => m.Element.Attributes())) {
                             meta.Add(attr.Name.ToJsonId(element.Name.Namespace), attr.Value);
                         }
-                        result.Add(Elements.Meta.ToJsonId(), meta);
+                        result.Add(Schema.SoftwareIdentity.Elements.Meta.ToJsonId(), meta);
                     }
                     // return result.ToString();
+                    
                     var doc = SetStandardContext(Compact(result)).ToString(Formatting.Indented);
-                    return doc.Replace(@"""swid:", @"""");
+                     doc =doc.Replace(@"http://standards.iso.org/iso/19770/-2/2015/schema.xsd#", @"swid:");
+                     doc = doc.Replace(@"http://packagemanagement.org/discovery#", @"discovery:");
+                    doc = doc.Replace(@"http://packagemanagement.org/installation#", @"installation:");
+                    return doc.Replace(@"""swid:", @"""");// + "\r\n" + result.ToString(Formatting.Indented);
                 }
 
                 return null;
@@ -125,6 +129,8 @@ namespace FearTheCowboy.Iso19770 {
             var container = new JObject();
             foreach (var eachElement in elementGroup) {
                 var item = new JObject();
+
+                // add every attribute we have a match for.
                 foreach (var attr in eachElement.AllAttributes().Where(attr => attr.Name != identity.Index && !attr.IsNamespaceDeclaration)) {
                     item.Add(IdentityIndex[attr.Name].JsonName, attr.Value);
                 }
@@ -133,6 +139,21 @@ namespace FearTheCowboy.Iso19770 {
                 if (indexValue != null) {
                     container.Add(indexValue, item);
                 }
+
+                // handle child elements
+                foreach (var childGroup in eachElement.Elements().GroupBy(each => each.Name)) {
+                    var i = IdentityIndex[childGroup.Key];
+
+                    if (i != null) {
+                        // we know what type this is
+
+                        if (i.Index != null) {
+                            // we know what attribute we want to use as an index.
+                            OutputKeyedArray(childGroup, i, item);
+                        }
+                    }
+                }
+
             }
             result.Add(identity.JsonName, container);
         }
@@ -159,15 +180,11 @@ namespace FearTheCowboy.Iso19770 {
         }
 
         public static SoftwareIdentity LoadXml(string swidTagXml) {
-            try {
-                using (var reader = XmlReader.Create(new StringReader(swidTagXml), new XmlReaderSettings())) {
-                    var document = XDocument.Load(reader);
-                    if (IsSwidtag(document.Root)) {
-                        return new SoftwareIdentity(document);
-                    }
+            using (var reader = XmlReader.Create(new StringReader(swidTagXml), new XmlReaderSettings())) {
+                var document = XDocument.Load(reader);
+                if (IsSwidtag(document.Root)) {
+                    return new SoftwareIdentity(document);
                 }
-            } catch (Exception e) {
-                e.Dump();
             }
             return null;
         }
@@ -195,110 +212,102 @@ namespace FearTheCowboy.Iso19770 {
         }
 
         public static SoftwareIdentity LoadJson(string swidTagJson) {
-            try {
-                var swidTag = new SoftwareIdentity();
-                Meta meta = null;
+            var swidTag = new SoftwareIdentity();
+            Meta meta = null;
 
-                var expanded = Normalize(swidTagJson);
+            var expanded = Normalize(swidTagJson);
 
-                foreach (var member in expanded) {
-                    var memberName = member.Key;
-                    if (member.Value.Type == JTokenType.Array) {
-                        foreach (var element in member.Value.Cast<JObject>()) {
-                            var index = element.Index();
-                            var value = element.Val();
+            foreach (var member in expanded) {
+                var memberName = member.Key;
+                if (member.Value.Type == JTokenType.Array) {
+                    foreach (var element in member.Value.Cast<JObject>()) {
+                        var index = element.Index();
+                        var value = element.Val();
 
-                            if (index != null) {
-                                if (value != null) {
-                                    if (memberName == JSonMembers.Meta) {
-                                        meta = meta ?? swidTag.AddMeta();
-                                        meta.SetAttribute(index, value);
-                                    }
-                                } else {
-                                    var identity = IdentityIndex[memberName];
-
-                                    if (memberName == identity.JsonName) {
-                                        try {
-                                            // create the new element
-                                            var e = new XElement(identity.XmlName);
-                                            swidTag.Element.Add(e);
-
-                                            foreach (var property in element.Properties().Where(each => each.Name != "@index")) {
-                                                e.SetAttribute(IdentityIndex[property.Name].XmlName, property.PropertyValue());
-                                            }
-
-                                            // set the index of the element
-                                            if (identity.Index != null) {
-                                                e.SetAttribute(identity.Index, index);
-                                            }
-                                        } catch (Exception e) {
-                                            e.Dump();
-                                        }
-                                    }
+                        if (index != null) {
+                            if (value != null) {
+                                if (memberName == JSonMembers.Meta) {
+                                    meta = meta ?? swidTag.AddMeta();
+                                    meta.SetAttribute(index, value);
                                 }
                             } else {
-                                swidTag.SetAttribute(memberName.ToXName(), value);
+                                var identity = IdentityIndex[memberName];
+
+                                if (memberName == identity.JsonName || memberName == identity.ProperName ) {
+                                    try {
+                                        // create the new element
+                                        var e = new XElement(identity.XmlName);
+                                        swidTag.Element.Add(e);
+
+                                        foreach (var property in element.Properties().Where(each => each.Name != "@index")) {
+                                            e.SetAttribute(IdentityIndex[property.Name].XmlName, property.PropertyValue());
+                                        }
+
+                                        // set the index of the element
+                                        if (identity.Index != null) {
+                                            e.SetAttribute(identity.Index, index);
+                                        }
+                                    } catch (Exception e) {
+                                        e.Dump();
+                                    }
+                                }
                             }
+                        } else {
+                            swidTag.SetAttribute(memberName.ToXName(), value);
                         }
-                        continue;
                     }
-                    // Console.WriteLine("'{0}' -- '{1}'", memberName, member.Value.Type);
+                    continue;
                 }
-                return swidTag;
-            } catch (Exception e) {
-                e.Dump();
-                return null;
+                // Console.WriteLine("'{0}' -- '{1}'", memberName, member.Value.Type);
             }
+            return swidTag;
+
         }
 
         public static SoftwareIdentity LoadHtml(string swidTagHtml) {
-            try {
-                using (var reader = new SgmlReader {
-                    DocType = "HTML",
-                    WhitespaceHandling = WhitespaceHandling.All,
-                    StripDocType = true,
-                    InputStream = new StringReader(swidTagHtml),
-                    CaseFolding = CaseFolding.ToLower
-                }) {
-                    var document = XDocument.Load(reader);
+            using (var reader = new SgmlReader {
+                DocType = "HTML",
+                WhitespaceHandling = WhitespaceHandling.All,
+                StripDocType = true,
+                InputStream = new StringReader(swidTagHtml),
+                CaseFolding = CaseFolding.ToLower
+            }) {
+                var document = XDocument.Load(reader);
 
-                    if (document.Root != null && document.Root.Name.LocalName == "html") {
-                        var swidTag = new SoftwareIdentity {
-                            Name = "Anonymous",
-                            Version = "1.0",
-                            VersionScheme = Schema.VersionScheme.MultipartNumeric
-                        };
+                if (document.Root != null && document.Root.Name.LocalName == "html") {
+                    var swidTag = new SoftwareIdentity {
+                        Name = "Anonymous",
+                        Version = "1.0",
+                        VersionScheme = Schema.VersionScheme.MultipartNumeric
+                    };
 
-                        var html = document.Root;
-                        var ns = html.Name.Namespace;
+                    var html = document.Root;
+                    var ns = html.Name.Namespace;
 
-                        var head = html.Element(ns + "head");
-                        if (head != null) {
-                            var links = head.Elements(ns + "link");
+                    var head = html.Element(ns + "head");
+                    if (head != null) {
+                        var links = head.Elements(ns + "link");
 
-                            foreach (var link in links) {
-                                var href = link.Attribute("href");
-                                var rel = link.Attribute("rel");
+                        foreach (var link in links) {
+                            var href = link.Attribute("href");
+                            var rel = link.Attribute("rel");
 
-                                if (href != null && rel != null) {
-                                    var l = swidTag.AddLink(new Uri(href.Value), rel.Value);
-                                    foreach (var attr in link.Attributes()) {
-                                        l.SetAttribute(attr.Name, attr.Value);
-                                    }
+                            if (href != null && rel != null) {
+                                var l = swidTag.AddLink(new Uri(href.Value), rel.Value);
+                                foreach (var attr in link.Attributes()) {
+                                    l.SetAttribute(attr.Name, attr.Value);
                                 }
                             }
                         }
-                        return swidTag;
                     }
+                    return swidTag;
                 }
-            } catch (Exception e) {
-                e.Dump();
             }
             return null;
         }
 
         public static bool IsSwidtag(XElement xmlDocument) {
-            return xmlDocument.Name == Elements.SoftwareIdentity;
+            return xmlDocument.Name == Schema.SoftwareIdentity.Elements.SoftwareIdentity;
         }
 
         public bool IsApplicable(Hashtable environment) {
@@ -311,12 +320,12 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return StringExtensions.IsTruePreserveNull(GetAttribute(Schema.Attributes.Corpus));
+                return StringExtensions.IsTruePreserveNull(GetAttribute(Schema.SoftwareIdentity.Attributes.Corpus));
             }
             set
             {
                 if (value != null) {
-                    SetAttribute(Schema.Attributes.Corpus, value.ToString());
+                    SetAttribute(Schema.SoftwareIdentity.Attributes.Corpus, value.ToString());
                 }
             }
         }
@@ -325,11 +334,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Name);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Name);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Name, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Name, value);
             }
         }
 
@@ -337,11 +346,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Version);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Version);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Version, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Version, value);
             }
         }
 
@@ -349,11 +358,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.VersionScheme);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.VersionScheme);
             }
             set
             {
-                SetAttribute(Schema.Attributes.VersionScheme, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.VersionScheme, value);
             }
         }
 
@@ -361,11 +370,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.TagVersion);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.TagVersion);
             }
             set
             {
-                SetAttribute(Schema.Attributes.TagVersion, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.TagVersion, value);
             }
         }
 
@@ -374,11 +383,11 @@ namespace FearTheCowboy.Iso19770 {
             get
             {
                 // was called 'UniqueId' until very late in the ISO process. Check there for the value if it's not got a tagid.
-                return GetAttribute(Schema.Attributes.TagId) ?? GetAttribute(Schema.Attributes.UniqueId);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.TagId) ?? GetAttribute(Schema.SoftwareIdentity.Attributes.UniqueId);
             }
             set
             {
-                SetAttribute(Schema.Attributes.TagId, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.TagId, value);
             }
         }
 
@@ -386,12 +395,12 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return StringExtensions.IsTruePreserveNull(GetAttribute(Schema.Attributes.Patch));
+                return StringExtensions.IsTruePreserveNull(GetAttribute(Schema.SoftwareIdentity.Attributes.Patch));
             }
             set
             {
                 if (value != null) {
-                    SetAttribute(Schema.Attributes.Patch, value.ToString());
+                    SetAttribute(Schema.SoftwareIdentity.Attributes.Patch, value.ToString());
                 }
             }
         }
@@ -400,12 +409,12 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return StringExtensions.IsTruePreserveNull(GetAttribute(Schema.Attributes.Supplemental));
+                return StringExtensions.IsTruePreserveNull(GetAttribute(Schema.SoftwareIdentity.Attributes.Supplemental));
             }
             set
             {
                 if (value != null) {
-                    SetAttribute(Schema.Attributes.Supplemental, value.ToString());
+                    SetAttribute(Schema.SoftwareIdentity.Attributes.Supplemental, value.ToString());
                 }
             }
         }
@@ -414,11 +423,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Media);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Media);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Media, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Media, value);
             }
         }
 
@@ -430,7 +439,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Meta).Select(each => new SoftwareMetadata(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Meta).Select(each => new SoftwareMetadata(each)).ReEnumerable();
             }
         }
 
@@ -442,7 +451,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Link).Select(each => new Link(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Link).Select(each => new Link(each)).ReEnumerable();
             }
         }
 
@@ -452,13 +461,13 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return _links ?? (_links = new ElementIndexer<Uri, Link>(Elements.Link, Element, Schema.Attributes.HRef, element => new Link(element)));
+                return _links ?? (_links = new ElementIndexer<Uri, Link>(Schema.SoftwareIdentity.Elements.Link, Element, Schema.SoftwareIdentity.Attributes.HRef, element => new Link(element)));
             }
         }
 
         public void RemoveLink(Uri referenceUri) {
-            foreach (var element in Element.Elements(Elements.Link).ToArray()) {
-                var href = element.GetAttribute(Schema.Attributes.HRef);
+            foreach (var element in Element.Elements(Schema.SoftwareIdentity.Elements.Link).ToArray()) {
+                var href = element.GetAttribute(Schema.SoftwareIdentity.Attributes.HRef);
                 if (href != null && href == referenceUri.AbsoluteUri) {
                     element.Remove();
                 }
@@ -473,7 +482,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Entity).Select(each => new Entity(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Entity).Select(each => new Entity(each)).ReEnumerable();
             }
         }
 
@@ -501,7 +510,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Payload).Select(each => new Payload(each)).FirstOrDefault();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Payload).Select(each => new Payload(each)).FirstOrDefault();
             }
         }
 
@@ -512,7 +521,7 @@ namespace FearTheCowboy.Iso19770 {
         public Payload AddPayload() {
             // should we just detect and add the evidence element when a provider is adding items to the evidence
             // instead of requiring someone to explicity add the element?
-            if (Element.Elements(Elements.Payload).Any()) {
+            if (Element.Elements(Schema.SoftwareIdentity.Elements.Payload).Any()) {
                 return Payload;
             }
             return AddElement(new Payload());
@@ -533,7 +542,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Evidence).Select(each => new Evidence(each)).FirstOrDefault();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Evidence).Select(each => new Evidence(each)).FirstOrDefault();
             }
         }
 
@@ -544,7 +553,7 @@ namespace FearTheCowboy.Iso19770 {
         public Evidence AddEvidence() {
             // should we just detect and add the evidence element when a provider is adding items to the evidence
             // instead of requiring someone to explicity add the element?
-            if (Element.Elements(Elements.Evidence).Any()) {
+            if (Element.Elements(Schema.SoftwareIdentity.Elements.Evidence).Any()) {
                 return Evidence;
             }
             return AddElement(new Evidence());

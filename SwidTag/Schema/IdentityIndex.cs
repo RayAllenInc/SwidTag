@@ -33,17 +33,20 @@ namespace FearTheCowboy.Iso19770.Schema {
                 Context.Add(decl.Value, decl.Key.NamespaceName + "#");
             }
 
-            // elements 
-            AddIdentity(Elements.Link, Attributes.HRef);
-            AddIdentity(Elements.Directory, Attributes.Name);
-            AddIdentity(Elements.File, Attributes.Name);
-            AddIdentity(Elements.Entity, Attributes.RegId);
-            AddIdentity(Elements.Process, Attributes.Name);
-            AddIdentity(Elements.Resource, Attributes.Type);
-            AddIdentity(Elements.Meta, null);
+            // swid elements 
+            AddIdentity(SoftwareIdentity.Elements.Link, SoftwareIdentity.Attributes.HRef);
+            AddIdentity(SoftwareIdentity.Elements.Directory, SoftwareIdentity.Attributes.Name);
+            AddIdentity(SoftwareIdentity.Elements.File, SoftwareIdentity.Attributes.Name);
+            AddIdentity(SoftwareIdentity.Elements.Entity, SoftwareIdentity.Attributes.RegId);
+            AddIdentity(SoftwareIdentity.Elements.Process, SoftwareIdentity.Attributes.Name);
+            AddIdentity(SoftwareIdentity.Elements.Resource, SoftwareIdentity.Attributes.Type);
+            AddIdentity(SoftwareIdentity.Elements.Meta, null);
+
+
+            AddIdentity(Discovery.Elements.Parameter, Discovery.Attributes.Name);
 
             // attributes
-            foreach (var field in new[] {typeof (Attributes), typeof (Installation), typeof (Discovery)}.SelectMany(type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(each => each.FieldType == typeof (XName)))) {
+            foreach(var field in new[] {typeof (SoftwareIdentity.Attributes), typeof (Installation.Attributes), typeof (Discovery.Attributes)}.SelectMany(type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Where(each => each.FieldType == typeof (XName)))) {
                 try {
                     AddIdentity((XName)field.GetValue(null));
                 } catch (Exception e) {
@@ -80,19 +83,31 @@ namespace FearTheCowboy.Iso19770.Schema {
             var i = new Identity {
                 XmlName = name,
                 JsonName = name.ToJsonId(),
+                ProperName = name.ToProperName(),
                 Index = index
             };
 
+            Context.Add($"{Namespace.Declarations[name.Namespace]}:{name.LocalName}", new JObject {
+                {"@id", $"{name.Namespace.NamespaceName}#{name.LocalName}" },
+                {"@container", "@index"}
+            });
+
             Context.Add(name.LocalName, new JObject {
-                {"@id", Namespace.Declarations[name.Namespace] + ":" + name.LocalName},
+                // {"@id", Namespace.Declarations[name.Namespace] + ":" + name.LocalName},
+                  {"@id", $"{name.Namespace.NamespaceName}#{name.LocalName}" },
                 {"@container", "@index"}
             });
 
-            Context.Add(name.LocalName.ToLowerInvariant(), new JObject {
-                {"@id", Namespace.Declarations[name.Namespace] + ":" + name.LocalName},
-                {"@container", "@index"}
-            });
+            try {
+                Context.Add(name.LocalName.ToLowerInvariant(), new JObject {
+                    // {"@id", Namespace.Declarations[name.Namespace] + ":" + name.LocalName},
+                    {"@id", $"{name.Namespace.NamespaceName}#{name.LocalName}" },
+                    {"@container", "@index"}
+                });
 
+            } catch (Exception e) {
+                Console.WriteLine("AAAG.");
+            }
             if (index != null) {
                 if (Context.Property(index.LocalName) == null) {
                     Context.Add(index.LocalName, new JObject {
@@ -105,6 +120,10 @@ namespace FearTheCowboy.Iso19770.Schema {
             if (!_viaJsonName.ContainsKey(i.JsonName)) {
                 _viaJsonName.Add(i.JsonName, i);
             }
+            if(!_viaJsonName.ContainsKey(i.ProperName)) {
+                _viaJsonName.Add(i.ProperName, i);
+            }
+
             if (!_viaXname.ContainsKey(i.XmlName)) {
                 _viaXname.Add(i.XmlName, i);
             }
@@ -113,7 +132,7 @@ namespace FearTheCowboy.Iso19770.Schema {
         private static string LookupType(XName name) {
             string type = null;
             if (name.Namespace == Namespace.Swid) {
-                var element = Schema.Swidtag.XPathSelectElement(@"//xs:attribute[@name=""{0}""]".format(name.LocalName), Schema.NamespaceManager);
+                var element = Schema.Swidtag.XPathSelectElement($@"//xs:attribute[@name=""{name.LocalName}""]", Schema.NamespaceManager);
                 if (element != null) {
                     type = XmlExtensions.GetAttribute(element, "type");
 
@@ -133,13 +152,14 @@ namespace FearTheCowboy.Iso19770.Schema {
             var i = new Identity {
                 XmlName = name,
                 JsonName = name.ToJsonId(),
+                ProperName = name.ToProperName(),
                 Index = null
             };
 
             if (Context.Property(name.LocalName) == null) {
                 string type = null;
                 if (name.Namespace == Namespace.Swid) {
-                    var element = Schema.Swidtag.XPathSelectElement(@"//xs:attribute[@name=""{0}""]".format(name.LocalName), Schema.NamespaceManager);
+                    var element = Schema.Swidtag.XPathSelectElement($@"//xs:attribute[@name=""{name.LocalName}""]", Schema.NamespaceManager);
                     if (element != null) {
                         type = XmlExtensions.GetAttribute(element, "type");
 
@@ -150,13 +170,23 @@ namespace FearTheCowboy.Iso19770.Schema {
                 }
 
                 Context.Add(name.LocalName, new JObject {
-                    {"@id", Namespace.Declarations[name.Namespace] + ":" + name.LocalName},
+                    // {"@id", Namespace.Declarations[name.Namespace] + ":" + name.LocalName},
+                    {"@id", $"{name.Namespace.NamespaceName}#{name.LocalName}" },
+                    {"@type", type ?? "xs:string"}
+                });
+
+                Context.Add($"{Namespace.Declarations[name.Namespace]}:{name.LocalName}", new JObject {
+                    // {"@id", Namespace.Declarations[name.Namespace] + ":" + name.LocalName},
+                    {"@id", $"{name.Namespace.NamespaceName}#{name.LocalName}" },
                     {"@type", type ?? "xs:string"}
                 });
             }
 
             if (!_viaJsonName.ContainsKey(i.JsonName)) {
                 _viaJsonName.Add(i.JsonName, i);
+            }
+            if(!_viaJsonName.ContainsKey(i.ProperName)) {
+                _viaJsonName.Add(i.ProperName, i);
             }
             if (!_viaXname.ContainsKey(i.XmlName)) {
                 _viaXname.Add(i.XmlName, i);
@@ -166,6 +196,7 @@ namespace FearTheCowboy.Iso19770.Schema {
         internal class Identity {
             internal XName Index;
             internal string JsonName;
+            internal string ProperName;
             internal XName XmlName;
         }
     }

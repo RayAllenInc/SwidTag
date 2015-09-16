@@ -14,6 +14,7 @@
 namespace FearTheCowboy.Iso19770 {
     using System.Xml.Linq;
     using Common.Core;
+    using Schema;
 
     /// <summary>
     ///     Represents an individual file or directory.
@@ -37,12 +38,12 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Key).IsTruePreserveNull();
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Key).IsTruePreserveNull();
             }
             set
             {
                 if (value != null) {
-                    SetAttribute(Schema.Attributes.Key, value.ToString());
+                    SetAttribute(Schema.SoftwareIdentity.Attributes.Key, value.ToString());
                 }
             }
         }
@@ -57,11 +58,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Location);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Location);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Location, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Location, value);
             }
         }
 
@@ -73,11 +74,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Name);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Name);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Name, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Name, value);
             }
         }
 
@@ -92,11 +93,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Root);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Root);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Root, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Root, value);
             }
         }
     }

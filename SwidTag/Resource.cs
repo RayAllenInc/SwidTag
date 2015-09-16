@@ -27,13 +27,13 @@ namespace FearTheCowboy.Iso19770 {
     public class Resource : Meta {
         internal Resource(XElement element)
             : base(element) {
-            if (element.Name != Elements.Resource) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.Resource) {
                 throw new ArgumentException("Element is not of type 'Resource'", "element");
             }
         }
 
         internal Resource(string type)
-            : base(new XElement(Elements.Resource)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Resource)) {
             Type = type;
         }
 
@@ -47,11 +47,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Type);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Type);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Type, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Type, value);
             }
         }
     }

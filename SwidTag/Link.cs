@@ -30,13 +30,13 @@ namespace FearTheCowboy.Iso19770 {
     public class Link : BaseElement {
         internal Link(XElement element)
             : base(element) {
-            if (element.Name != Elements.Link) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.Link) {
                 throw new ArgumentException("Element is not of type 'Link'", "element");
             }
         }
 
         internal Link(Uri href, string relationship)
-            : base(new XElement(Elements.Link)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Link)) {
             HRef = href;
             Relationship = relationship;
         }
@@ -51,11 +51,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Artifact);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Artifact);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Artifact, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Artifact, value);
             }
         }
 
@@ -88,7 +88,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                var v = GetAttribute(Schema.Attributes.HRef);
+                var v = GetAttribute(Schema.SoftwareIdentity.Attributes.HRef);
                 Uri result;
                 if (v != null && Uri.TryCreate(v, UriKind.Absolute, out result)) {
                     return result;
@@ -97,7 +97,7 @@ namespace FearTheCowboy.Iso19770 {
             }
             set
             {
-                SetAttribute(Schema.Attributes.HRef, value.ToString());
+                SetAttribute(Schema.SoftwareIdentity.Attributes.HRef, value.ToString());
             }
         }
 
@@ -111,11 +111,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Media);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Media);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Media, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Media, value);
             }
         }
 
@@ -126,11 +126,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Ownership);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Ownership);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Ownership, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Ownership, value);
             }
         }
 
@@ -141,11 +141,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Relationship);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Relationship);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Relationship, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Relationship, value);
             }
         }
 
@@ -159,11 +159,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.MediaType);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.MediaType);
             }
             set
             {
-                SetAttribute(Schema.Attributes.MediaType, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.MediaType, value);
             }
         }
 
@@ -174,23 +174,25 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Use);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Use);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Use, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Use, value);
             }
         }
+
+        #region  Discovery
 
         public string MinimumName
         {
             get
             {
-                return GetAttribute(Discovery.MinimumName);
+                return GetAttribute(Discovery.Attributes.MinimumName);
             }
             set
             {
-                SetAttribute(Discovery.MinimumName, value);
+                SetAttribute(Discovery.Attributes.MinimumName, value);
             }
         }
 
@@ -198,11 +200,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Discovery.MaximumName);
+                return GetAttribute(Discovery.Attributes.MaximumName);
             }
             set
             {
-                SetAttribute(Discovery.MaximumName, value);
+                SetAttribute(Discovery.Attributes.MaximumName, value);
             }
         }
 
@@ -210,11 +212,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Discovery.MinimumVersion);
+                return GetAttribute(Discovery.Attributes.MinimumVersion);
             }
             set
             {
-                SetAttribute(Discovery.MinimumVersion, value);
+                SetAttribute(Discovery.Attributes.MinimumVersion, value);
             }
         }
 
@@ -222,11 +224,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Discovery.MaximumVersion);
+                return GetAttribute(Discovery.Attributes.MaximumVersion);
             }
             set
             {
-                SetAttribute(Discovery.MaximumVersion, value);
+                SetAttribute(Discovery.Attributes.MaximumVersion, value);
             }
         }
 
@@ -234,11 +236,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Discovery.Keyword);
+                return GetAttribute(Discovery.Attributes.Keyword);
             }
             set
             {
-                SetAttribute(Discovery.Keyword, value);
+                SetAttribute(Discovery.Attributes.Keyword, value);
             }
         }
 
@@ -246,11 +248,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Discovery.Version);
+                return GetAttribute(Discovery.Attributes.Version);
             }
             set
             {
-                SetAttribute(Discovery.Version, value);
+                SetAttribute(Discovery.Attributes.Version, value);
             }
         }
 
@@ -258,11 +260,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Discovery.Latest);
+                return GetAttribute(Discovery.Attributes.Latest);
             }
             set
             {
-                SetAttribute(Discovery.Latest, value);
+                SetAttribute(Discovery.Attributes.Latest, value);
             }
         }
 
@@ -270,23 +272,27 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Discovery.Type);
+                return GetAttribute(Discovery.Attributes.Type);
             }
             set
             {
-                SetAttribute(Discovery.Type, value);
+                SetAttribute(Discovery.Attributes.Type, value);
             }
         }
 
+        #endregion
+
+
+        #region installation
         public string InstallParameters
         {
             get
             {
-                return GetAttribute(Installation.Parameters);
+                return GetAttribute(Installation.Elements.Parameters);
             }
             set
             {
-                SetAttribute(Installation.Parameters, value);
+                SetAttribute(Installation.Elements.Parameters, value);
             }
         }
 
@@ -294,16 +300,18 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Installation.Script);
+                return GetAttribute(Installation.Elements.Script);
             }
             set
             {
-                SetAttribute(Installation.Script, value);
+                SetAttribute(Installation.Elements.Script, value);
             }
         }
+        #endregion
+
 
         public override string ToString() {
-            return "{0}:{1}".format(Relationship, HRef);
+            return $"{Relationship}:{HRef}";
         }
     }
 }

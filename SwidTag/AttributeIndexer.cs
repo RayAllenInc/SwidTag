@@ -79,7 +79,7 @@ namespace FearTheCowboy.Iso19770 {
         }
 
         public override string ToString() {
-            return "{{{0}}}".format(Keys.Select(each => each.ToString()).JoinWithComma());
+            return $"{{{Keys.Select(each => each.ToString()).JoinWithComma()}}}";
         }
     }
 }

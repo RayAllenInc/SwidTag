@@ -22,13 +22,13 @@ namespace FearTheCowboy.Iso19770 {
     public class File : FilesystemItem {
         internal File(XElement element)
             : base(element) {
-            if (element.Name != Elements.File) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.File) {
                 throw new ArgumentException("Element is not of type 'File'", "element");
             }
         }
 
         internal File(string filename)
-            : base(new XElement(Elements.File)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.File)) {
             Name = filename;
         }
 
@@ -40,7 +40,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                var sz = GetAttribute(Schema.Attributes.Size);
+                var sz = GetAttribute(Schema.SoftwareIdentity.Attributes.Size);
                 if (sz != null) {
                     long result;
                     if (Int64.TryParse(sz, out result)) {
@@ -52,7 +52,7 @@ namespace FearTheCowboy.Iso19770 {
             set
             {
                 if (value != null) {
-                    SetAttribute(Schema.Attributes.Size, value.ToString());
+                    SetAttribute(Schema.SoftwareIdentity.Attributes.Size, value.ToString());
                 }
             }
         }
@@ -65,11 +65,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Version);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Version);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Version, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Version, value);
             }
         }
     }

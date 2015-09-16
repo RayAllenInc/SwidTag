@@ -33,7 +33,7 @@ namespace FearTheCowboy.Iso19770.Test.Support {
                 } else {
                     // Event<WriteLine>.Raise(format, args);
                     lock (_queue) {
-                        _queue.Add(format.format(args));
+                        _queue.Add(string.Format(format,args));
                     }
                 }
             } catch {

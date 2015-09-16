@@ -13,7 +13,16 @@ for /R %%v in (*.nuspec) do (
     tools\nuget pack !file! -symbols -Properties Configuration=Release || goto fail
 ) 
 
+goto justcopy
+
+:publish
+for %%v in (*.nupkg) do (
+    tools\nuget push %%v
+)
+
+:justcopy
 move *.nupkg ..\repo || goto fail
+
 
 goto fin
 

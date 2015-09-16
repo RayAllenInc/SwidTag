@@ -16,7 +16,14 @@ namespace FearTheCowboy.Iso19770.Schema {
 
     public static class Installation {
         // Package Link Installer Attributes 
-        public static readonly XName Parameters = Namespace.Installation + "parameters";
-        public static readonly XName Script = Namespace.Installation + "script";
+        public static class Attributes {
+            
+        }
+
+        public static class Elements {
+            public static readonly XName Parameters = Namespace.Installation + "parameters";
+            public static readonly XName Script = Namespace.Installation + "script";
+        }
+        
     }
 }

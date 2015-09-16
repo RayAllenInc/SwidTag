@@ -28,13 +28,13 @@ namespace FearTheCowboy.Iso19770 {
     public class Directory : FilesystemItem {
         internal Directory(XElement element)
             : base(element) {
-            if (element.Name != Elements.Directory) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.Directory) {
                 throw new ArgumentException("Element is not of type 'Directory'", "element");
             }
         }
 
         internal Directory(string name)
-            : base(new XElement(Elements.Directory)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Directory)) {
             Name = name;
         }
 
@@ -45,7 +45,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Directory).Select(each => new Directory(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Directory).Select(each => new Directory(each)).ReEnumerable();
             }
         }
 
@@ -56,7 +56,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.File).Select(each => new File(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.File).Select(each => new File(each)).ReEnumerable();
             }
         }
 

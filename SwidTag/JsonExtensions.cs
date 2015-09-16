@@ -60,7 +60,17 @@ namespace FearTheCowboy.Iso19770 {
         }
 
         public static string ToJsonId(this XName name, XNamespace defaultNamespace = null) {
+            
+
             if (string.IsNullOrEmpty(name.NamespaceName) && defaultNamespace != null) {
+                return defaultNamespace.NamespaceName + "#" + name.LocalName;
+            }
+            // return name.NamespaceName + "#" + name.LocalName;
+            return $"{Schema.Namespace.Declarations[name.Namespace]}:{name.LocalName}";
+        }
+
+        public static string ToProperName(this XName name, XNamespace defaultNamespace = null) {
+            if(string.IsNullOrEmpty(name.NamespaceName) && defaultNamespace != null) {
                 return defaultNamespace.NamespaceName + "#" + name.LocalName;
             }
             return name.NamespaceName + "#" + name.LocalName;

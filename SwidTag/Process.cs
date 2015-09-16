@@ -19,13 +19,13 @@ namespace FearTheCowboy.Iso19770 {
     public class Process : Meta {
         internal Process(XElement element)
             : base(element) {
-            if (element.Name != Elements.Process) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.Process) {
                 throw new ArgumentException("Element is not of type 'Process'", "element");
             }
         }
 
         internal Process(string processName)
-            : base(new XElement(Elements.Process)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Process)) {
             Name = processName;
         }
 
@@ -37,11 +37,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Name);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Name);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Name, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Name, value);
             }
         }
 
@@ -53,7 +53,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                var sz = GetAttribute(Schema.Attributes.Size);
+                var sz = GetAttribute(Schema.SoftwareIdentity.Attributes.Size);
                 if (sz != null) {
                     int result;
                     if (Int32.TryParse(sz, out result)) {
@@ -65,7 +65,7 @@ namespace FearTheCowboy.Iso19770 {
             set
             {
                 if (value != null) {
-                    SetAttribute(Schema.Attributes.Pid, value.ToString());
+                    SetAttribute(Schema.SoftwareIdentity.Attributes.Pid, value.ToString());
                 }
             }
         }

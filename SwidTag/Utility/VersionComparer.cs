@@ -17,6 +17,7 @@ namespace FearTheCowboy.Iso19770.Utility {
     using Common.Collections;
     using Common.Core;
     using Schema;
+    using SoftwareIdentity = Iso19770.SoftwareIdentity;
 
     public class VersionComparer : IComparer<SoftwareIdentity> {
         public static VersionComparer Instance = new VersionComparer();

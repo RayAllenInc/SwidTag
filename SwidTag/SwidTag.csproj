@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FearTheCowboy.Iso19770</RootNamespace>
     <AssemblyName>FearTheCowboy.SwidTag</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), solution.props))\solution.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), solution.props))\solution.props')" />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,17 +32,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FearTheCowboy.Common, Version=1.0.0.20, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FearTheCowboy.Common.1.0.0.20\lib\net452\FearTheCowboy.Common.dll</HintPath>
+    <Reference Include="FearTheCowboy.Common, Version=1.0.0.52, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FearTheCowboy.Common.1.0.0.52\lib\net45\FearTheCowboy.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="JsonLD, Version=1.0.4.0, Culture=neutral, PublicKeyToken=2e465378e3b1a8dd, processorArchitecture=MSIL">
       <HintPath>..\packages\json-ld.net.1.0.4\lib\net40-Client\JsonLD.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.4.0.1\lib\40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SgmlReaderDll, Version=1.8.11.0, Culture=neutral, PublicKeyToken=46b2db9ca481831b, processorArchitecture=MSIL">
       <HintPath>..\packages\SgmlReader.1.8.11\lib\4.0\SgmlReaderDll.dll</HintPath>
@@ -78,10 +78,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="ResourceCollection.cs" />
-    <Compile Include="Schema\Attributes.cs" />
+    <Compile Include="Schema\SoftwareIdentity.cs" />
     <Compile Include="Schema\Declaration.cs" />
     <Compile Include="Schema\Discovery.cs" />
-    <Compile Include="Schema\Elements.cs" />
     <Compile Include="Schema\IdentityIndex.cs" />
     <Compile Include="Schema\Installation.cs" />
     <Compile Include="Schema\JSonMembers.cs" />
@@ -101,9 +100,12 @@
     <Compile Include="Utility\XmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="README.md" />
-    <None Include="SwidTag.nuspec" />
+    <None Include="SwidTag.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Discovery.xsd.xml" />

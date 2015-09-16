@@ -31,7 +31,7 @@ namespace FearTheCowboy.Iso19770 {
         }
 
         internal Meta()
-            : base(new XElement(Elements.Meta)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Meta)) {
         }
 
         public string this[string key]

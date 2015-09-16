@@ -51,11 +51,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.XmlLang);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.XmlLang);
             }
             set
             {
-                SetAttribute(Schema.Attributes.XmlLang, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.XmlLang, value);
             }
         }
 
@@ -85,11 +85,11 @@ namespace FearTheCowboy.Iso19770 {
         }
 
         protected static bool IsMetaElement(XElement element) {
-            return Elements.MetaElements.Contains(element.Name);
+            return Schema.SoftwareIdentity.Elements.MetaElements.Contains(element.Name);
         }
 
         private static string PathToElement(string parent, XElement element) {
-            return "{0}/{1}[{2}]".format(parent, element.Name.LocalName, element.ElementsBeforeSelf(element.Name).Count() + 1);
+            return $"{parent}/{element.Name.LocalName}[{element.ElementsBeforeSelf(element.Name).Count() + 1}]";
         }
 
         protected static string PathToElement(XElement element) {

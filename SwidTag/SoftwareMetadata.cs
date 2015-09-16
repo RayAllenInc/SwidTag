@@ -19,24 +19,24 @@ namespace FearTheCowboy.Iso19770 {
 
     public class SoftwareMetadata : Meta {
         internal SoftwareMetadata(XElement element) : base(element) {
-            if (element.Name != Elements.Meta) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.Meta) {
                 throw new ArgumentException("Element is not of type 'SoftwareMetadata'", "element");
             }
         }
 
         internal SoftwareMetadata()
-            : base(new XElement(Elements.Meta)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Meta)) {
         }
 
         public string ActivationStatus
         {
             get
             {
-                return GetAttribute(Schema.Attributes.ActivationStatus);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.ActivationStatus);
             }
             set
             {
-                SetAttribute(Schema.Attributes.ActivationStatus, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.ActivationStatus, value);
             }
         }
 
@@ -44,11 +44,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.ChannelType);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.ChannelType);
             }
             set
             {
-                SetAttribute(Schema.Attributes.ChannelType, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.ChannelType, value);
             }
         }
 
@@ -56,11 +56,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Description);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Description);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Description, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Description, value);
             }
         }
 
@@ -68,11 +68,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.ColloquialVersion);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.ColloquialVersion);
             }
             set
             {
-                SetAttribute(Schema.Attributes.ColloquialVersion, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.ColloquialVersion, value);
             }
         }
 
@@ -80,11 +80,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Edition);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Edition);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Edition, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Edition, value);
             }
         }
 
@@ -92,11 +92,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.EntitlementKey);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.EntitlementKey);
             }
             set
             {
-                SetAttribute(Schema.Attributes.EntitlementKey, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.EntitlementKey, value);
             }
         }
 
@@ -104,11 +104,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Generator);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Generator);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Generator, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Generator, value);
             }
         }
 
@@ -116,11 +116,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.PersistentId);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.PersistentId);
             }
             set
             {
-                SetAttribute(Schema.Attributes.PersistentId, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.PersistentId, value);
             }
         }
 
@@ -128,11 +128,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Product);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Product);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Product, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Product, value);
             }
         }
 
@@ -140,11 +140,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.ProductFamily);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.ProductFamily);
             }
             set
             {
-                SetAttribute(Schema.Attributes.ProductFamily, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.ProductFamily, value);
             }
         }
 
@@ -152,11 +152,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Revision);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Revision);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Revision, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Revision, value);
             }
         }
 
@@ -164,11 +164,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.UnspscCode);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.UnspscCode);
             }
             set
             {
-                SetAttribute(Schema.Attributes.UnspscCode, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.UnspscCode, value);
             }
         }
 
@@ -176,11 +176,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.UnspscVersion);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.UnspscVersion);
             }
             set
             {
-                SetAttribute(Schema.Attributes.UnspscVersion, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.UnspscVersion, value);
             }
         }
 
@@ -188,12 +188,12 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.EntitlementDataRequired).IsTruePreserveNull();
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.EntitlementDataRequired).IsTruePreserveNull();
             }
             set
             {
                 if (value != null) {
-                    SetAttribute(Schema.Attributes.EntitlementDataRequired, value.ToString());
+                    SetAttribute(Schema.SoftwareIdentity.Attributes.EntitlementDataRequired, value.ToString());
                 }
             }
         }

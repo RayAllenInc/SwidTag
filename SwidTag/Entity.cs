@@ -33,13 +33,13 @@ namespace FearTheCowboy.Iso19770 {
         /// </summary>
         /// <param name="element"></param>
         internal Entity(XElement element) : base(element) {
-            if (element.Name != Elements.Entity) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.Entity) {
                 throw new ArgumentException("Element is not of type 'Entity'", "element");
             }
         }
 
         internal Entity(string name, string regId, string role)
-            : base(new XElement(Elements.Entity)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Entity)) {
             Name = name;
             RegId = string.IsNullOrWhiteSpace(regId) ? "invalid.unavailable" : regId;
             AddRole(role);
@@ -52,11 +52,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Name);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Name);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Name, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Name, value);
             }
         }
 
@@ -75,7 +75,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                var attr = GetAttribute(Schema.Attributes.Role.LocalName);
+                var attr = GetAttribute(Schema.SoftwareIdentity.Attributes.Role.LocalName);
                 if (attr != null) {
                     return attr.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
                 }
@@ -87,11 +87,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Role.LocalName);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Role.LocalName);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Role, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Role, value);
             }
         }
 
@@ -103,11 +103,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.Thumbprint.LocalName);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.Thumbprint.LocalName);
             }
             set
             {
-                SetAttribute(Schema.Attributes.Thumbprint, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Thumbprint, value);
             }
         }
 
@@ -120,11 +120,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.RegId.LocalName);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.RegId.LocalName);
             }
             set
             {
-                SetAttribute(Schema.Attributes.RegId, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.RegId, value);
             }
         }
 
@@ -135,7 +135,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Meta).Select(each => new Meta(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Meta).Select(each => new Meta(each)).ReEnumerable();
             }
         }
 
@@ -148,7 +148,7 @@ namespace FearTheCowboy.Iso19770 {
                 role = string.Empty;
             }
 
-            var attr = GetAttribute(Schema.Attributes.Role.LocalName);
+            var attr = GetAttribute(Schema.SoftwareIdentity.Attributes.Role.LocalName);
             if (attr != null) {
                 var roles = attr.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries).ConcatSingleItem(role).Distinct();
                 role = roles.JoinWith(" ");
@@ -159,7 +159,7 @@ namespace FearTheCowboy.Iso19770 {
                 role = "unknown";
             }
 
-            Element.SetAttributeValue(Schema.Attributes.Role, role.Trim());
+            Element.SetAttributeValue(Schema.SoftwareIdentity.Attributes.Role, role.Trim());
         }
 
         /// <summary>

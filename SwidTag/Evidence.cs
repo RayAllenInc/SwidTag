@@ -30,13 +30,13 @@ namespace FearTheCowboy.Iso19770 {
     public class Evidence : ResourceCollection {
         internal Evidence(XElement element)
             : base(element) {
-            if (element.Name != Elements.Evidence) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.Evidence) {
                 throw new ArgumentException("Element is not of type 'Evidence'", "element");
             }
         }
 
         internal Evidence()
-            : base(new XElement(Elements.Evidence)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Evidence)) {
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                var v = GetAttribute(Schema.Attributes.Date);
+                var v = GetAttribute(Schema.SoftwareIdentity.Attributes.Date);
                 if (v != null) {
                     try {
                         return XmlConvert.ToDateTime(v, XmlDateTimeSerializationMode.Utc);
@@ -62,7 +62,7 @@ namespace FearTheCowboy.Iso19770 {
                 }
                 var v = (DateTime)value;
 
-                SetAttribute(Schema.Attributes.Date, v.ToUniversalTime().ToString("o", CultureInfo.CurrentCulture));
+                SetAttribute(Schema.SoftwareIdentity.Attributes.Date, v.ToUniversalTime().ToString("o", CultureInfo.CurrentCulture));
             }
         }
 
@@ -73,11 +73,11 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return GetAttribute(Schema.Attributes.DeviceId);
+                return GetAttribute(Schema.SoftwareIdentity.Attributes.DeviceId);
             }
             set
             {
-                SetAttribute(Schema.Attributes.DeviceId, value);
+                SetAttribute(Schema.SoftwareIdentity.Attributes.DeviceId, value);
             }
         }
     }

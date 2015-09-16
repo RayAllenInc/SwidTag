@@ -19,6 +19,7 @@ namespace FearTheCowboy.Iso19770.Test {
     using Support;
     using Xunit;
     using Xunit.Abstractions;
+    using SoftwareIdentity = Iso19770.SoftwareIdentity;
 
     public class PersistenceTests : Tests {
         public PersistenceTests(ITestOutputHelper outputHelper)
@@ -93,6 +94,16 @@ namespace FearTheCowboy.Iso19770.Test {
         public void XmlTest() {
             using (CaptureConsole) {
                 var tag = SoftwareIdentity.LoadXml(File.ReadAllText("Samples\\swid.feed.xml"));
+                Assert.NotNull(tag);
+                Console.WriteLine(tag.SwidTagXml);
+                Console.WriteLine(tag.SwidTagJson);
+            }
+        }
+
+        [Fact]
+        public void ParameterizedDiscoveryTest() {
+            using(CaptureConsole) {
+                var tag = SoftwareIdentity.LoadXml(File.ReadAllText("Samples\\ParameterizedDiscovery.feed.swidtag"));
                 Assert.NotNull(tag);
                 Console.WriteLine(tag.SwidTagXml);
                 Console.WriteLine(tag.SwidTagJson);

@@ -1,0 +1,1 @@
+tools\nuget.exe update Swidtag.sln -verbose

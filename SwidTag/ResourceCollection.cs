@@ -30,7 +30,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Directory).Select(each => new Directory(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Directory).Select(each => new Directory(each)).ReEnumerable();
             }
         }
 
@@ -41,7 +41,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.File).Select(each => new File(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.File).Select(each => new File(each)).ReEnumerable();
             }
         }
 
@@ -52,7 +52,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Process).Select(each => new Process(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Process).Select(each => new Process(each)).ReEnumerable();
             }
         }
 
@@ -63,7 +63,7 @@ namespace FearTheCowboy.Iso19770 {
         {
             get
             {
-                return Element.Elements(Elements.Resource).Select(each => new Resource(each)).ReEnumerable();
+                return Element.Elements(Schema.SoftwareIdentity.Elements.Resource).Select(each => new Resource(each)).ReEnumerable();
             }
         }
 

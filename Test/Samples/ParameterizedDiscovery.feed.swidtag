@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:discovery="http://packagemanagement.org/discovery"
+    
+    media="(OS:windows)"
+    name="something"
+    tagVersion="1" tagId="something"
+    version="1.2.3.4" versionScheme="multipartnumeric">
+
+ <Link 
+      href="https://someplace/${subscription-id}/services/images/query?publisher=${publisher}&amp;location=${location}"
+      type="application/swid-tag+xml"
+      rel="feed"
+      >
+		<discovery:parameter name="publisher" values="tom lucy chuck" required="false"/>  
+        <discovery:parameter name="location" values="north-america europe asia" required="false"  />  
+		<discovery:parameter name="subscription-id" values="alpha bravo charlie" required="true"  />  
+    </Link>
+
+</SoftwareIdentity>

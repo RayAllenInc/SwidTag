@@ -13,105 +13,10 @@
   <xs:annotation>
     <xs:documentation>
       Schema for Software Installation via swidtag metadata.
-      Aka "Caramel"
     </xs:documentation>
     <xs:appinfo>
       <version>1.0</version>
     </xs:appinfo>
   </xs:annotation>
 
-  <xs:attribute
-    name="parameterSet"
-    type="xs:string">
-    <xs:annotation>
-      <xs:documentation>
-        (doc text)
-      </xs:documentation>
-    </xs:annotation>
-  </xs:attribute>
-
-  <xs:element name="ParameterSet" type="ParameterSet" />
-
-  <xs:complexType name="ParameterSet">
-    <xs:annotation>
-      <xs:documentation>
-        (doc text)
-      </xs:documentation>
-    </xs:annotation>
-
-    <xs:sequence minOccurs="1" maxOccurs="unbounded">
-      <xs:element
-        name="Parameter"
-        type="Parameter">
-        <xs:annotation>
-          <xs:documentation>
-            (doc text)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
-
-    <xs:attribute
-      name="name"
-      type="xs:string"
-      use="required">
-      <xs:annotation>
-        <xs:documentation>
-          (doc text)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
-
-  <xs:complexType name="Parameter">
-    <xs:annotation>
-      <xs:documentation>
-        (doc text)
-      </xs:documentation>
-    </xs:annotation>
-
-    <xs:attribute
-      name="name"
-      type="xs:string"
-      use="required">
-      <xs:annotation>
-        <xs:documentation>
-          (doc text)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-
-    <xs:attribute
-      name="type"
-      type="xs:string"
-      use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          (doc text)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-
-    <xs:attribute
-      name="values"
-      type="xs:NMTOKENS"
-      use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          (doc text)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-
-    <xs:attribute
-      name="required"
-      type="xs:boolean"
-      use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          (doc text)
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
 </xs:schema>

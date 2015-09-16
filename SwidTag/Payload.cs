@@ -33,13 +33,13 @@ namespace FearTheCowboy.Iso19770 {
     public class Payload : ResourceCollection {
         internal Payload(XElement element)
             : base(element) {
-            if (element.Name != Elements.Payload) {
+            if (element.Name != Schema.SoftwareIdentity.Elements.Payload) {
                 throw new ArgumentException("Element is not of type 'Payload'", "element");
             }
         }
 
         internal Payload()
-            : base(new XElement(Elements.Payload)) {
+            : base(new XElement(Schema.SoftwareIdentity.Elements.Payload)) {
         }
     }
 }

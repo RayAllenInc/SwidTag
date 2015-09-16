@@ -58,7 +58,7 @@
 
 
   <Link 
-      href="https://someplace/${subscription-id}/services/images/query?publisher=${publisher}&location=${location}"
+      href="https://someplace/${subscription-id}/services/images/query?publisher=${publisher}&amp;location=${location}"
       type="application/swid-tag+xml"
       rel="feed"
       >
@@ -68,12 +68,12 @@
         <discovery:parameter name="location" values="north-america europe asia" required="false" />  
     
     </Link>
-  
-  
+
+  <!--
   json:
   
   Link : { 
-    "https://someplace/${subscription-id}/services/images/query?publisher=${publisher}&location=${location}" : {
+    "https://someplace/${subscription-id}/services/images/query?publisher=${publisher}&amp;location=${location}" : {
       "type"="application/swid-tag+xml",
       "rel": "feed",
       "media": "(OS:windows)",
@@ -85,9 +85,25 @@
       }
     }
   }
+  -->
+  
+  <!--
+    <Link 
+      href="https://someplace/..."
+      
+      rel="package"
+      >
+    
+        <installation:script>
+          echo installed!
+        </installation:script>  
+      
+    </Link>
+  -->
+  
   
     <Link 
-      href="https://someplace/${subscription-id}/services/images/query?publisher=${publisher}&location=${location}"
+      href="https://someplace/${subscription-id}/services/images/query?publisher=${publisher}&amp;location=${location}"
       type="application/swid-tag+xml"
       rel="feed"
       
