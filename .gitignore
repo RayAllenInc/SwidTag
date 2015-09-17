@@ -100,7 +100,7 @@ streams.exe
 /attic/
 policheck*
 *.orig
-OneGet.orig.sln
+*.orig.sln
 *pingme*
 .nuget
 UpgradeLog.htm
@@ -109,3 +109,6 @@ xunit-test-results.xml
 signed/
 .vs/
 log.txt
+*.nuget.props
+*.nuget.targets
+*.lock.json

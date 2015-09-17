@@ -1,0 +1,14 @@
+﻿{
+    "dependencies": {
+        "FearTheCowboy.Common": "*",
+        "json-ld.net": "1.0.4",
+        "Newtonsoft.Json": "7.0.1",
+        "SgmlReader": "1.8.11"
+    },
+    "frameworks": {
+        "net45": { }
+    },
+    "runtimes": {
+        "win-anycpu": { }
+    }
+}
